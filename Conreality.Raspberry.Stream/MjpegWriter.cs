@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 using System.Drawing;
+using System.IO;
+using System.Text;
 
 // -------------------------------------------------
 // Developed By : Ragheed Al-Tayeb
@@ -11,14 +9,14 @@ using System.Drawing;
 // Date         : April 2012
 // -------------------------------------------------
 
-namespace rtaNetworking.Streaming
+namespace Conreality.Raspberry.Stream
 {
 
     /// <summary>
     /// Provides a stream writer that can be used to write images as MJPEG 
     /// or (Motion JPEG) to any stream.
     /// </summary>
-    public class MjpegWriter:IDisposable 
+    internal class MjpegWriter:IDisposable 
     {
 
         private static byte[] CRLF = new byte[] { 13, 10 };
@@ -26,13 +24,13 @@ namespace rtaNetworking.Streaming
 
         private string _Boundary;
 
-        public MjpegWriter(Stream stream)
+        public MjpegWriter(System.IO.Stream stream)
             : this(stream, "--boundary")
         {
 
         }
 
-        public MjpegWriter(Stream stream,string boundary)
+        public MjpegWriter(System.IO.Stream stream,string boundary)
         {
 
             this.Stream = stream;
@@ -40,7 +38,7 @@ namespace rtaNetworking.Streaming
         }
 
         public string Boundary { get; private set; }
-        public Stream Stream { get; private set; }
+        public System.IO.Stream Stream { get; private set; }
 
         public void WriteHeader()
         {

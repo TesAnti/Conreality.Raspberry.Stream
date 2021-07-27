@@ -2,10 +2,10 @@
 using MMALSharp.Common;
 using MMALSharp.Handlers;
 
-namespace Inspectron.CovidTest.Raspberry
+namespace Conreality.Raspberry.Stream
 {
     
-    public class VideoHandler : InMemoryCaptureHandler
+    internal class VideoHandler : InMemoryCaptureHandler
     {
         public ConcurrentQueue<byte[]> ImageQueue = new ConcurrentQueue<byte[]>();
 

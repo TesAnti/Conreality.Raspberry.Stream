@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Inspectron.CovidTest.Raspberry.Image;
 using MMALSharp;
 using MMALSharp.Common;
 using MMALSharp.Common.Utility;
 using MMALSharp.Components;
-using MMALSharp.Config;
 using MMALSharp.Native;
 using MMALSharp.Ports;
 
-namespace Inspectron.CovidTest.Raspberry
+namespace Conreality.Raspberry.Stream
 {
     
-    public class RaspberryCamera :ICamera
+    internal class RaspberryCamera 
     {
         private VideoHandler _imgCaptureHandler;
         private MMALSplitterComponent _splitter;
@@ -25,26 +22,16 @@ namespace Inspectron.CovidTest.Raspberry
         private int _height=480;
 
 
-        public RaspberryCamera(ICameraProvider provider)
-        {
-            Provider = provider;
-        }
 
-        public string Name => "Raspberry main camera";
+        
 
         public bool IsOpen { get; private set; }
 
         public bool IsGrabbingContinuous { get; private set; }
 
-        public ICameraCapabilities Capabilities => new RaspberryCameraCapabilities();
-
-        public IEnumerable<ICameraParameter> Parameters => new List<ICameraParameter>()
-        {
-            new CameraParameter("Width",()=>_width,x=>_width=(int)x),
-            new CameraParameter("Height",()=>_height,x=>_height=(int)x)
-        };
-
-        public ICameraProvider Provider { get; private set; }
+        
+        public delegate void ImageGrabbedHandler(RaspberryCamera sender, byte[] image);
+       
 
         public event ImageGrabbedHandler ImageGrabbed=delegate{ };
 
@@ -77,26 +64,7 @@ namespace Inspectron.CovidTest.Raspberry
         }
         
         
-        #region NotImplemented
-        public IImage GrabSingle()
-        {
-            throw new NotImplementedException();
-        }
-        public void LoadParameters(string parametersFile)
-        {
-            throw new NotImplementedException();
-        }
-        public void SaveParameters(string parametersFile)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveParametersToDevice()
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
+        
         public void StartGrabContinuous()
         {
             if (!IsOpen) throw new Exception("Camera is not open");
@@ -132,7 +100,7 @@ namespace Inspectron.CovidTest.Raspberry
                     else
                     {
                         
-                        ImageGrabbed(this, new ByteImage(_width, _height, 3,imageData,_width*3));
+                        ImageGrabbed(this, imageData);
                     }
                     
                 }
